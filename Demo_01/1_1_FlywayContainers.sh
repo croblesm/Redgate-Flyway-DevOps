@@ -90,9 +90,9 @@ flyway
 └── sql
     └── V1_Migration.sql    --> SQL-based migrations
 
-# Env variables
-SQLScripts=~/Documents/Redgate-Flyway/Demo_01/SQLScripts;
-ConfigFile=~/Documents/Redgate-Flyway/Demo_01/ConfigFile;
+# Environment variables
+# SQLScripts=~/Documents/Redgate-Flyway/Demo_01/SQLScripts;
+# ConfigFile=~/Documents/Redgate-Flyway/Demo_01/ConfigFile;
 
 # Initializing flyway
 docker container run --rm \
