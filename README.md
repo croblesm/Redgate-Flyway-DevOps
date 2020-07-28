@@ -17,6 +17,11 @@ You will be able to build your first database migration through a CI/CD pipeline
 * [CI/CD pipelines with Flyway](Demo_02)
 * [CI/CD pipelines with Flyway](Demo_03)
 
+## **Other**  
+* [Kubernetes resources](Kubernetes)  
+These are the collection of Kubernetes resources I used to build the Kubernetes platform for this demo.  
+
+
 ## Questions?
 If you have questions or comments about this demo, don't hesitate to contact me at <crobles@dbamastery.com>
 

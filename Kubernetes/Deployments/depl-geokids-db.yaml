@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geokids-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geokids-db
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: geokids-db
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: geokids-db
+        image: geokids/geokids-db:1.0
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+        - name: pg-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pg-data
+          persistentVolumeClaim:
+            claimName: pvc-pg-data

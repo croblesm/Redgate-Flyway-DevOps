@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: geokidsdb-flyway-config
+type: Opaque
+stringData:
+  flyway.conf: |-
+    flyway.url=jdbc:postgresql://<hostname>:5432/geokids
+    flyway.user=geokids
+    flyway.password=CmdL1n3-r0ck5

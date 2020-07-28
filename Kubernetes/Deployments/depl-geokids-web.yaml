@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geokids-web-deployment
+spec:
+  selector:
+    matchLabels:
+      app: geokids
+      tier: web
+      track: stable
+  replicas: 4 
+  template:
+    metadata:
+      labels:
+        app: geokids
+        tier: web
+        track: stable
+    spec:
+      containers:
+        - name: geokids-web
+          image: "geokids/geokids-web:1.0"
+          env:
+            - name: DB_HOST
+              value: <hostname>
+          ports:
+            - name: http
+              containerPort: 8080
