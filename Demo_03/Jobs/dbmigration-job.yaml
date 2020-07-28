@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dbmigration-{{ENVIRONMENT}}-{{VERSION}}
+spec:
+  template:
+    spec:
+      containers:
+      - name: dbmigration-{{ENVIRONMENT}}-{{VERSION}}
+        image: geokids/geokidsdb-flyway:{{VERSION}}
+        imagePullPolicy: Always
+        command: ["/flyway/flyway"]
+        args: ["migrate"]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /flyway/conf
+          readOnly: true
+      restartPolicy: Never
+      volumes:
+      - name: config-volume
+        secret:
+          secretName: geokidsdb-flyway-config
+  backoffLimit: 4

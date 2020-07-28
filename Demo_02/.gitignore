@@ -1,0 +1,8 @@
+.DS_Store
+.LSOverride
+README.md
+v2-SQLScripts/
+ConfigFile/
+2_1_FlywayMigrations-Pipeline.sh
+3_1_FlywayMigrations-Pipeline.sh
+README.md

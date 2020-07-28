@@ -1,0 +1,109 @@
+pipeline {
+  agent any
+  stages {
+    stage('Code checkout') {
+      // Checking out code from GeoKids GitHub repo
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build & push') {
+      parallel {
+        // Building new Flyway migration image
+        stage('Building image') {
+          steps {
+            script {
+              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            }
+
+          }
+        }
+
+        // Pushing new Flyway migration image to Docker Hub
+        stage('Pushing image') {
+          steps {
+            script {
+              docker.withRegistry( '', registryCredential ) {
+                dockerImage.push()
+              }
+            }
+          }
+        }
+      }
+    }
+
+    stage('Tests') {
+      parallel {
+        // Simulating QA environment tests
+        stage('QA tests') {
+          steps {
+            echo 'Performing QA tests ... '
+          }
+        }
+
+        // Simulating stage environment tests
+        stage('Stage tests') {
+          steps {
+            echo 'Performing Stage tests ... '
+          }
+        }
+
+      }
+    }
+
+    // Asking for approval to update artifacts and deploy changes
+    stage('Deployment - Approval') {
+      input {
+        message 'Finished the CI part, do you approve the deploy in production? (Click "Yes" to continue)'
+        id 'Yes'
+      }
+      steps {
+        echo '================================================================================'
+        echo 'Flyway migration build number:' + ":$BUILD_NUMBER"
+        echo 'Updating artifacts - Kubernetes job for environment' + ":$BUILD_NUMBER"
+        echo '================================================================================'
+      }
+    }
+
+    // Updating Kubernetes job with build number and environment
+    stage('Updating artifacts') {
+      parallel {
+        // Updating Kubernetes job environment to "PRODUCTION"
+        stage('Update environment') {
+          steps {
+            sh "sed  -i 's/{{ENVIRONMENT}}/${ENVIRONMENT}/g' ./Jobs/dbmigration-job.yaml"
+          }
+        }
+
+        // Updating Kubernetes job with new Flyway migration image
+        stage('Update image') {
+          steps {
+            sh "sed  -i 's/{{VERSION}}/${BUILD_NUMBER}/g' ./Jobs/dbmigration-job.yaml"
+          }
+        }
+
+      }
+    }
+
+    // Kubernetes - job deployment
+    stage('Deployment') {
+      steps {
+        withKubeConfig(credentialsId: 'jenkins-robot', serverUrl: 'https://geokids-dns-740422c9.hcp.westus.azmk8s.io:443') {
+          //sh 'kubectl get pods'
+          sh 'kubectl apply -f ./Jobs/dbmigration-job.yaml --record'
+        }
+
+      }
+    }
+
+  }
+
+  // Pipeline workspace environment variables
+  environment {
+    ENVIRONMENT = 'prod'
+    registry = 'geokids/geokidsdb-flyway'
+    registryCredential = 'docker-hub'
+    dockerImage = ''
+  }
+}
