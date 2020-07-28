@@ -23,6 +23,10 @@ You will be able to build your first database migration through a CI/CD pipeline
 * [Kubernetes resources](Kubernetes)  
 These are the collection of Kubernetes resources I used to build the Kubernetes platform for this demo.  
 
+## Note
+Special thanks to [Geovani de Leon](https://www.linkedin.com/in/geovani-de-león-5a315359/) from Guatemala 🇬🇹 for the help, developing the NodeJS web app application of this demo. 👍 🚀
+
+Please take a moment to check [Geovani GitHub's repository](https://github.com/yovafree). He is a very talented developer, promoting OpenSource technologies and leading the new generating of developers from Guatemala.
 
 ## Questions?
 If you have questions or comments about this demo, don't hesitate to contact me at <crobles@dbamastery.com>
