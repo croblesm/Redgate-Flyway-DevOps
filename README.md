@@ -7,6 +7,8 @@ This session will provide you with answers and guidelines to get you started wit
 
 You will be able to build your first database migration through a CI/CD pipeline at the end of this session.
 
+[![N|Solid](./Redgate-CarlosRobles-1.png)](https://bit.ly/2P33nGz)
+
 ## **Prerequisites**  
 * Download [Flyway comand-line](https://flywaydb.org/download/) | [container](https://hub.docker.com/r/flyway/flyway)
 * Experience with PostgreSQL databases and software development
